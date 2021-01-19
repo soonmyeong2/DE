@@ -1,0 +1,5 @@
+.idea
+data acquisition/__pycache__
+data acquisition/.idea
+data acquisition/result.json
+data acquisition/bug_report.txt
