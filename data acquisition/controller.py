@@ -1,10 +1,13 @@
 from threading import Thread, Event
 from worker import Worker
+from pipelines import MongoPipeline
 
-# limit the number of reviews of products, 0 is unlimited
+# LIMIT : the number of reviews of products, 0 is unlimited
 LIMIT = 20
 LIMIT_PAGE = 10
-DELAY_TIME = 2.0
+DELAY_TIME = 2
+MONGO_URI = 'mongodb://20.194.18.75:27017'
+MONGO_DATABASE = 'reviews'
 
 
 class Controller(object):
@@ -13,7 +16,9 @@ class Controller(object):
         self.stop_thread = Event()
 
     def scraping(self):
-        Worker(self.stop_thread, LIMIT_PAGE, limit=LIMIT, delay_time=DELAY_TIME)
+        keyword = input("search : ").strip()
+        db = MongoPipeline(MONGO_URI, MONGO_DATABASE, keyword)
+        Worker(self.stop_thread, LIMIT_PAGE, keyword, db, limit=LIMIT, delay_time=DELAY_TIME)
         print('done')
 
     def start(self):

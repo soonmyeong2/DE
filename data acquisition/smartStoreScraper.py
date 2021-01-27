@@ -6,35 +6,33 @@ from datetime import datetime
 
 class SmartStoreScraper:
     def __init__(self):
-        self.API_url = "https://shopping.naver.com/search/all"
-        self.user_agent = {
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36'
-        }
-        self.scraped_items = []
+        self.target_url = "https://shopping.naver.com/search/all"
         self.scraped_malls = []
+        self.user_agent = {
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/85.0.4183.121 Safari/537.36 '
+        }
 
-    def get_query_link(self, page, query, sort_option):
+    def get_query_link(self, query, sort_option):
         payloads = {
             "sort": sort_option,
             "origQuery": query,
-            "pagingIndex": page,
-            "pagingSize": 80,
+            "pagingSize": 100,  # MAX Size
             "viewType": "list",
             "productSet": "total",
             "frm": "NVSHATC",
             "query": query
         }
-        # TODO optimize
-        r = requests.get(self.API_url, params=payloads, headers=self.user_agent)
+        r = requests.get(self.target_url, params=payloads, headers=self.user_agent)
         return r.url
 
     def get_query_json(self, link):
         r = requests.get(link, headers=self.user_agent)
         soup = BeautifulSoup(r.text, 'html.parser').find('script', {'id': "__NEXT_DATA__"}).string
-        json_data = json.loads(soup)
-        return json_data
+        return json.loads(soup)
 
-    def get_item_info(self, data):
+    @staticmethod
+    def get_item_info(data):
         result = []
         product_list = data['props']['pageProps']['initialState']['products']['list']
         for product in product_list:
