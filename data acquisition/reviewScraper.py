@@ -17,7 +17,7 @@ class ReviewScraper:
         r = requests.get(link, headers=self.user_agent)
 
         if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser').find('body').find('script').string[27:]
+            soup = BeautifulSoup(r.content, 'lxml').find('body').find('script').string[27:]
             json_dict = json.loads(soup)
             merchant_no = json_dict['smartStore']['channel']['payReferenceKey']
             product_no = json_dict['product']['A']['productNo']

@@ -28,7 +28,7 @@ class SmartStoreScraper:
 
     def get_query_json(self, link):
         r = requests.get(link, headers=self.user_agent)
-        soup = BeautifulSoup(r.text, 'html.parser').find('script', {'id': "__NEXT_DATA__"}).string
+        soup = BeautifulSoup(r.content, 'lxml').find('script', {'id': "__NEXT_DATA__"}).string
         return json.loads(soup)
 
     @staticmethod
