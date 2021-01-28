@@ -1,4 +1,5 @@
 from smartStoreScraper import SmartStoreScraper
+import concurrent.futures
 
 
 class Application(object):
@@ -8,16 +9,24 @@ class Application(object):
         self.app = SmartStoreScraper()
         self.result = []
 
+    def get_item_info(self, url):
+        json_data = self.app.get_query_json(url)
+        item_info = self.app.get_item_info(json_data)
+        return item_info
+
     def start_process(self):
-        items = []
         base_url = self.app.get_query_link(self.query, sort_option="rel")
 
-        for i in range(1, self.limit_page):
-            url = base_url + f"&pagingIndex={i}"
-            json_data = self.app.get_query_json(url)
-            items.extend(self.app.get_item_info(json_data))
-        self.result.extend(self.filter_items(items))
-        return self.result
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = []
+            for i in range(1, self.limit_page):
+                url = base_url + f"&pagingIndex={i}"
+                future = executor.submit(self.get_item_info, url)
+                futures.append(future)
+
+            for future in concurrent.futures.as_completed(futures):
+                self.result.extend(future.result())
+        return self.filter_items(self.result)
 
     # only smartStore products
     @staticmethod

@@ -45,7 +45,6 @@ class Worker:
                     self.start_scraper(app, reviews, total_elements, total_pages, store_data)
                 else:
                     self.start_scraper(app, reviews, self.limit, total_pages, store_data)
-        return
 
     def start_scraper(self, app, reviews, limit, pages, store_data):
         while len(reviews) < limit:
