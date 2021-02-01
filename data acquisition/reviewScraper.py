@@ -19,11 +19,10 @@ class ReviewScraper:
         if r.status_code == 200:
             soup = BeautifulSoup(r.content, 'lxml').find('body').find('script').string[27:]
             json_dict = json.loads(soup)
-            merchant_no = json_dict['smartStore']['channel']['payReferenceKey']
-            product_no = json_dict['product']['A']['productNo']
             data = {
-                'merchant_no': merchant_no,
-                'product_no': product_no
+                'merchant_no': json_dict['smartStore']['channel']['payReferenceKey'],
+                'product_no': json_dict['product']['A']['productNo'],
+                'channel_name': json_dict['smartStore']['channel']['channelName']
             }
         else:
             sleep(3)
