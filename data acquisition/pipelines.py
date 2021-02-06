@@ -11,4 +11,4 @@ class MongoPipeline(object):
         self.client.close()
 
     def insert_item(self, item):
-        self.db[self.collection_name].insert(item)
+        self.db[self.collection_name].insert_many(item)
