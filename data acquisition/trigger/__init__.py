@@ -6,9 +6,9 @@ import azure.functions as func
 
 def is_keyword_searched(keyword):
     connection = MongoClient('your mongoDB')
-    db = connection['reviews']
-    collection = db[keyword]
-    return collection.estimated_document_count() != 0
+    db = connection['REVIEW_EARLY']
+    collection = db['reviews']
+    return bool(collection.find_one({"keyword": keyword}))
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:

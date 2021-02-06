@@ -7,7 +7,8 @@ LIMIT = 20
 LIMIT_PAGE = 10
 DELAY_TIME = 2
 MONGO_URI = 'mongodb://20.194.18.75:27017'
-MONGO_DATABASE = 'reviews'
+MONGO_DATABASE = 'REVIEW_EARLY'
+MONGO_COLLECTION = 'reviews'
 
 
 class Controller(object):
@@ -17,7 +18,7 @@ class Controller(object):
 
     def scraping(self):
         keyword = input("search : ").strip()
-        db = MongoPipeline(MONGO_URI, MONGO_DATABASE, keyword)
+        db = MongoPipeline(MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION)
         Worker(self.stop_thread, LIMIT_PAGE, keyword, db, limit=LIMIT, delay_time=DELAY_TIME)
         print('done')
 
