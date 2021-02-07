@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: demo
+
+  profiles:
+    active: dev
+
+  data:
+    mongodb:
+      uri: mongodb://admin:reviews123@20.194.18.75
+      database: REVIEW_EARLY
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: postgres
+    password: 1234
+
+server:
+  port: 8080
+
+mybatis:
+  config-location: classpath:mybatis/configuration.xml

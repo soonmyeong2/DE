@@ -1,0 +1,18 @@
+body {
+  background-color: rgb(235, 233, 233);
+}
+
+.contents-box {
+  padding-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.visible {
+  display:block ;
+}
+.invisible {
+  display: none;
+}
+
+
