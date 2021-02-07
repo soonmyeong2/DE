@@ -111,7 +111,7 @@ export default withRouter(function Home({ history }) {
   };
   const getMoreReview = async () => {
     setIsLoading(true);
-    await axios.get(`http://localhost:8080/review/${page}`).then((res) => {
+    await axios.get(`http://3.36.164.64:8080/review/${page}`).then((res) => {
       setReviews(reviews.concat(res.data.reviewList));
       setPage(res.data.num);
       console.log(res, page);

@@ -117,7 +117,7 @@ export default withRouter(function Search({ history, location }) {
   const getMoreReview = async () => {
     setIsLoading(true);
     await axios
-      .get(`http://localhost:8080/review/search/${query.search}/${page}`)
+      .get(`http://3.36.164.64:8080/review/search/${query.search}/${page}`)
       .then((res) => {
         if (res.data == "wait") {
           setTimeout(() => {
