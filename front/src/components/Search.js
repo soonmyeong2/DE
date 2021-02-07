@@ -122,7 +122,7 @@ export default withRouter(function Search({ history, location }) {
         if (res.data == "wait") {
           setTimeout(() => {
             getMoreReview();
-          }, 3000);
+          }, 1000);
         } else {
           console.log(res);
           setReviews(reviews.concat(res.data));
