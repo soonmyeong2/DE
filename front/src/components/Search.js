@@ -111,8 +111,10 @@ export default withRouter(function Search({ history, location }) {
 
   const onClick = () => {
     const value = searchValue;
-    setSearchValue("");
     history.push(`/search?search=${value}`);
+    setReviews([]);
+    setPage(0);
+    getMoreReview();
   };
   const getMoreReview = async () => {
     setIsLoading(true);
@@ -139,18 +141,19 @@ export default withRouter(function Search({ history, location }) {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   });
   useEffect(() => {
+    setSearchValue(query.search);
     getMoreReview();
     return () => {};
   }, []);
   return (
     <>
       <div className="content-list">
-        {" "}
         <div className="content">
           <div className="search">
             <input
@@ -158,6 +161,7 @@ export default withRouter(function Search({ history, location }) {
               className="searchTerm"
               placeholder="What are you looking for?"
               onChange={onChange}
+              value={searchValue}
             />
             <button onClick={onClick} className="searchButton">
               <SearchIcon />

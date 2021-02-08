@@ -1,14 +1,14 @@
+// import Home from "../components/Home";
 import { useDispatch } from "react-redux";
-import Home from "../components/Home";
+import Tile from "../components/Tile";
 import { changeComponent } from "../modules/route";
-// import Home2 from "../components/Home2";
-export default function HomeContainer() {
+export default function TileContainer() {
   const dispatch = useDispatch();
   const onChangeComponent = (component) => dispatch(changeComponent(component));
 
   return (
     <>
-      <Home onChangeComponent={onChangeComponent} />
+      <Tile onChangeComponent={onChangeComponent} />
     </>
   );
 }

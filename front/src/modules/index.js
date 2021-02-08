@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
-const rootReducer = combineReducers({});
+import route from "./route";
+const rootReducer = combineReducers({ route });
 
 export default rootReducer;

@@ -127,7 +127,7 @@ function ReviewUnit({ review }) {
   );
 }
 
-export default function Home2() {
+export default function Tile({ onChangeComponent }) {
   const contents = [];
   const [isLoading, setIsLoading] = useState(false);
 
@@ -161,14 +161,14 @@ export default function Home2() {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    console.log(2);
+    onChangeComponent("tile");
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   });
   useEffect(() => {
     getMoreReview();
-    console.log(1);
+
     return () => {};
   }, []);
 

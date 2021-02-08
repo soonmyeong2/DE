@@ -83,12 +83,14 @@ function ReviewUnit({ review }) {
   );
 }
 
-export default withRouter(function Home({ history }) {
+export default withRouter(function Home({ history, onChangeComponent }) {
   const contents = [];
+
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
+
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
@@ -100,23 +102,21 @@ export default withRouter(function Home({ history }) {
       getMoreReview();
     }
   };
-  const onChange = (e) => {
+
+  const onChangeSearchBar = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const onClick = () => {
+  const onClickSearchButton = () => {
     const value = searchValue;
-    setSearchValue("");
     history.push(`/search?search=${value}`);
   };
+
   const getMoreReview = async () => {
     setIsLoading(true);
     await axios.get(`http://3.36.164.64:8080/review/${page}`).then((res) => {
       setReviews(reviews.concat(res.data.reviewList));
       setPage(res.data.num);
-      console.log(res, page);
-
-      console.log(isLoading);
     });
 
     setIsLoading(false);
@@ -124,27 +124,27 @@ export default withRouter(function Home({ history }) {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    onChangeComponent("home");
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   });
   useEffect(() => {
     getMoreReview();
-    return () => {};
   }, []);
+
   return (
     <>
       <div className="content-list">
-        {" "}
         <div className="content">
           <div className="search">
             <input
               type="text"
               className="searchTerm"
               placeholder="What are you looking for?"
-              onChange={onChange}
+              onChange={onChangeSearchBar}
             />
-            <button onClick={onClick} className="searchButton">
+            <button onClick={onClickSearchButton} className="searchButton">
               <SearchIcon />
             </button>
           </div>
