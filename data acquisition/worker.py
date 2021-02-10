@@ -50,12 +50,13 @@ class Worker:
         while len(reviews) < limit:
             for page in range(1, pages + 1):
                 json = app.get_review_json(store_data['merchant_no'], store_data['product_no'], page)
+                json = filter(lambda dic: dic['reviewContentClassType'] != 'TEXT', json['contents'])
                 list(map(lambda data: data.update({
                     'channelName': store_data['channel_name'],
-                    'keyword', self.keyword
-                    }), json['contents']))
-                self.db.insert_item(json['contents'])
-                app.count_review(reviews, json['contents'])
+                    'keyword': self.keyword
+                    }), json))
+                self.db.insert_item(json)
+                app.count_review(reviews, json)
                 sleep(self.delay_time)
                 if len(reviews) >= limit:
                     break
