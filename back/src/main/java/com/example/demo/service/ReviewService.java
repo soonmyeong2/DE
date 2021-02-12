@@ -28,10 +28,9 @@ public class ReviewService {
     }
 
     public List<ReviewDTO> getSearch(String keyword,int page){
-        PageRequest pageRequest = PageRequest.of(1,20);
         Query query = new Query();
         query.addCriteria(Criteria.where("keyword").is(keyword));
-        List<ReviewDTO> li = mongoTemplate.find(query.limit(20).skip(page), ReviewDTO.class);
+        List<ReviewDTO> li = mongoTemplate.find(query.limit(9).skip(page*9), ReviewDTO.class);
         return  li;
     }
     public DefalutNewsResponse getDefaultNewsReviewList(DefalutNewsDTO defalutNewsDTO,int num){

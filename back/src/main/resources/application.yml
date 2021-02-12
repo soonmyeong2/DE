@@ -7,7 +7,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://admin:reviews123@20.194.18.75
+      uri: mongodb://admin:review123@52.231.26.114:27017
       database: REVIEW_EARLY
 
 

@@ -6,12 +6,16 @@ import com.example.demo.repository.DefalutNewsRepository;
 import com.example.demo.repository.ReviewRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.SampleOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DefalutNewsService {
@@ -23,21 +27,27 @@ public class DefalutNewsService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public DefalutNewsDTO getDefalut(){
+    public List<Map> getDefalut(){
 
-        DefalutNewsDTO defalutNewsDTO = defalutNewsRepository.findAllByAccount("").get(0);
-        if (defalutNewsDTO.getReviews().size()==0) {
-            List<String> reviewsId = new ArrayList<>();
-            List<ReviewDTO> reviewList =  reviewRepository.findAll();
-            for (ReviewDTO review : reviewList) {
-                reviewsId.add(review.get_id());
+        SampleOperation matchStage = Aggregation.sample(5);
+        Aggregation aggregation = Aggregation.newAggregation(matchStage);
+        AggregationResults results = mongoTemplate.aggregate(aggregation, "reviews", Map.class);
+        return  results.getMappedResults();
 
-            }
-            Collections.shuffle(reviewsId);
-            defalutNewsDTO.setReviews(reviewsId);
-            defalutNewsRepository.save(defalutNewsDTO);
-        }
-        return defalutNewsDTO;
+
+//        DefalutNewsDTO defalutNewsDTO = defalutNewsRepository.findAllByAccount("").get(0);
+//        if (defalutNewsDTO.getReviews().size()==0) {
+//            List<String> reviewsId = new ArrayList<>();
+//            List<ReviewDTO> reviewList =  reviewRepository.findAll();
+//            for (ReviewDTO review : reviewList) {
+//                reviewsId.add(review.get_id());
+//
+//            }
+//            Collections.shuffle(reviewsId);
+//            defalutNewsDTO.setReviews(reviewsId);
+//            defalutNewsRepository.save(defalutNewsDTO);
+//        }
+//        return defalutNewsDTO;
 
     }
 

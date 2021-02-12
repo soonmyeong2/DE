@@ -10,6 +10,7 @@ import Carousel from "./Carousel";
 import React, { useEffect, useState } from "react";
 import Loadding from "./Loading";
 import { withRouter } from "react-router-dom";
+import { BACK_URL } from "../api/api";
 function ReviewUnit({ review }) {
   const [commentOnOff, setCommnetOnOff] = useState(false);
 
@@ -88,7 +89,6 @@ export default withRouter(function Home({ history, onChangeComponent }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [page, setPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
 
   const handleScroll = () => {
@@ -114,9 +114,8 @@ export default withRouter(function Home({ history, onChangeComponent }) {
 
   const getMoreReview = async () => {
     setIsLoading(true);
-    await axios.get(`http://3.36.164.64:8080/review/${page}`).then((res) => {
-      setReviews(reviews.concat(res.data.reviewList));
-      setPage(res.data.num);
+    await axios.get(`${BACK_URL}/review`).then((res) => {
+      setReviews(reviews.concat(res.data));
     });
 
     setIsLoading(false);
@@ -141,7 +140,7 @@ export default withRouter(function Home({ history, onChangeComponent }) {
             <input
               type="text"
               className="searchTerm"
-              placeholder="What are you looking for?"
+              placeholder="뭘 찾으세요..?"
               onChange={onChangeSearchBar}
             />
             <button onClick={onClickSearchButton} className="searchButton">

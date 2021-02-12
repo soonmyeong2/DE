@@ -3,7 +3,7 @@
   justify-content: center;
 }
 .content {
-  width:  100%;
+  width: 100%;
   margin-bottom: 10px;
   background-color: white;
   box-shadow: 0px 0px 3px rgb(119, 119, 119);
@@ -32,12 +32,9 @@
   height: 20px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  color: #9dbfaf;
 }
 
 .searchTerm:focus {
-  color: #90ee87;
-
 }
 
 .searchButton {
@@ -56,11 +53,10 @@
   justify-content: flex-start;
   padding: 10px;
   & h3 {
-   margin:0;
-   margin-left: 5px;
-   line-height: 40px;
+    margin: 0;
+    margin-left: 5px;
+    line-height: 40px;
   }
-
 }
 .content-media {
   border-top: solid 1px rgb(168, 166, 166);
@@ -70,10 +66,9 @@
 .content-text {
   padding: 15px;
   min-height: 50px;
-
 }
-.content-more{
-  margin:0;
+.content-more {
+  margin: 0;
 }
 .content-action {
   display: flex;
@@ -95,7 +90,3 @@
   background-color: rgb(235, 233, 233);
   border-radius: 15px;
 }
-
-
-
-

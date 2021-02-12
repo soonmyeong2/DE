@@ -1,4 +1,4 @@
-body{
+body {
   background-color: white;
 }
 
@@ -8,21 +8,21 @@ body{
   justify-content: center;
 }
 .paper {
-  border: '2px solid #000';
+  border: "2px solid #000";
   background-color: white;
 
   width: 1020px;
 }
-.content-modal-text{
+.content-modal-text {
   width: 560px;
 }
-.content-modal{
-  display:flex;
+.content-modal {
+  display: flex;
   justify-content: center;
 }
-.content-box{
+.content-box {
   padding: 2px;
-  width:180px;
+  width: 180px;
   height: 180px;
 
   &:hover {
@@ -32,14 +32,14 @@ body{
   }
 }
 
-.content-box-img{
-  width:100%;
+.content-box-img {
+  width: 100%;
   height: 100%;
 }
 .content-list {
   display: flex;
   flex-wrap: wrap;
-  height:100%;
+  height: 100%;
   width: 560px;
 }
 
@@ -72,12 +72,6 @@ body{
   height: 20px;
   border-radius: 5px 0 0 5px;
   outline: none;
-  color: #9dbfaf;
-}
-
-.searchTerm:focus {
-  color: #90ee87;
-
 }
 
 .searchButton {
@@ -96,11 +90,10 @@ body{
   justify-content: flex-start;
   padding: 10px;
   & h3 {
-   margin:0;
-   margin-left: 5px;
-   line-height: 40px;
+    margin: 0;
+    margin-left: 5px;
+    line-height: 40px;
   }
-
 }
 .content-media {
   width: 560px;
@@ -111,10 +104,9 @@ body{
 .content-text {
   padding: 15px;
   min-height: 50px;
-
 }
-.content-more{
-  margin:0;
+.content-more {
+  margin: 0;
 }
 .content-action {
   display: flex;
@@ -136,7 +128,3 @@ body{
   background-color: rgb(235, 233, 233);
   border-radius: 15px;
 }
-
-
-
-

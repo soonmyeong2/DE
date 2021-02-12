@@ -6,6 +6,7 @@ import com.example.demo.dto.ReviewDTO;
 import com.example.demo.service.DefalutNewsService;
 import com.example.demo.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/review")
@@ -37,7 +39,7 @@ public class ReviewController {
 
             String a = URLEncoder.encode(keyword,"UTF-8");
 
-            URL  url = new URL("https://crawling-trigger.azurewebsites.net/api/trigger?code=h9ZPwUagB0Ij2EX6rrthX5cBODa4Kt/0lGOYr9/NICNRXQ0NA49COg==&keyword="+a);
+            URL  url = new URL("https://crawler-trigger.azurewebsites.net/api/trigger?code=MNB4m3Hq8I4zQ1D9Z2Eg0BCP2mr9SONJjO6mlxJKk1liYGagjyFgJA==&keyword="+a);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -45,7 +47,7 @@ public class ReviewController {
             // 읽기 타임아웃 설정
             conn.setReadTimeout(3000); // 3초-
 
-//201 검색할꺼 204 이미된거
+            //201 검색할꺼 204 이미된거
             // 요청 방식 구하기
             System.out.println("getRequestMethod():" + conn.getRequestMethod());
             // 응답 콘텐츠 유형 구하기
@@ -77,14 +79,14 @@ public class ReviewController {
 
         return new ResponseEntity<List<ReviewDTO>>(reviewList, HttpStatus.OK);
     }
-    @GetMapping("/{num}")
-    ResponseEntity<?> getReviewList(@PathVariable(value = "num") int num){
+    @GetMapping("")
+    ResponseEntity<?> getReviewList(){
 
 
-        DefalutNewsDTO defalutNewsDTO = defalutNewsService.getDefalut();
-        DefalutNewsResponse defalutNewsResponse = reviewService.getDefaultNewsReviewList(defalutNewsDTO, num);
+        List<Map> defalutNewsList = defalutNewsService.getDefalut();
 
-        return new ResponseEntity<DefalutNewsResponse>(defalutNewsResponse, HttpStatus.OK);
+
+        return new ResponseEntity<List<Map>>(defalutNewsList, HttpStatus.OK);
 
     }
 }

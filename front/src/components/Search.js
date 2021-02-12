@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import Loadding from "./Loading";
 import { withRouter } from "react-router-dom";
 import qs from "qs";
+import { BACK_URL } from "../api/api";
 function ReviewUnit({ review }) {
   const [commentOnOff, setCommnetOnOff] = useState(false);
 
@@ -39,7 +40,7 @@ function ReviewUnit({ review }) {
             {review.channelName}
           </small>
           <p>{review.reviewContent}</p>
-          <p className="content-more">더보기..</p>
+          <p className="content-more">더보기..{review._id}</p>
         </div>
         <div className="content-info"></div>
         <div className="content-action">
@@ -119,20 +120,18 @@ export default withRouter(function Search({ history, location }) {
   const getMoreReview = async () => {
     setIsLoading(true);
     await axios
-      .get(`http://3.36.164.64:8080/review/search/${query.search}/${page}`)
+      .get(`${BACK_URL}/review/search/${query.search}/${page}`)
       .then((res) => {
-        if (res.data == "wait") {
+        if (res.data === "wait") {
+          console.log("wait");
           setTimeout(() => {
             getMoreReview();
           }, 1000);
         } else {
-          console.log(res);
+          console.log(res.data, page);
           setReviews(reviews.concat(res.data));
 
           setPage((page) => page + 1);
-          console.log(res, page);
-
-          console.log(isLoading);
         }
       });
 
@@ -169,7 +168,7 @@ export default withRouter(function Search({ history, location }) {
           </div>
         </div>
         {reviews.map((review) => (
-          <ReviewUnit key={review.id} review={review} />
+          <ReviewUnit key={review._id} review={review} />
         ))}
         <div
           // className="visible"
