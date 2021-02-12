@@ -129,8 +129,11 @@ export default withRouter(function Search({ history, location }) {
           }, 1000);
         } else {
           console.log(res.data, page);
-          setReviews(reviews.concat(res.data));
-
+          if (page === 0) {
+            setReviews(res.data);
+          } else {
+            setReviews(reviews.concat(res.data));
+          }
           setPage((page) => page + 1);
         }
       });
