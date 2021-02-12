@@ -3,9 +3,21 @@ import { Link, withRouter } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import "../css/TopBar.scss";
 import logo from "../image/logo.png";
+import React, { useState } from "react";
 export default withRouter(function TopBar({ history, component }) {
+  const [searchValue, setSearchValue] = useState("");
   const onClickLogo = () => {
     history.push("/");
+    history.go();
+  };
+
+  const onChangeSearchBar = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const onClickSearchButton = () => {
+    const value = searchValue;
+    history.push(`/search?search=${value}`);
     history.go();
   };
   return (
@@ -25,26 +37,26 @@ export default withRouter(function TopBar({ history, component }) {
         </div>
         <img alt="logo" onClick={onClickLogo} className="logo" src={logo}></img>
         <div className="">
-          <form
-            method="GET"
-            action="https://www.shopwithscrip.com/Search?"
+          <div
             role="search"
             className="navbar-form navbar-left ng-pristine ng-valid"
             id="express-form"
-            novalidate=""
           >
             <input
               required=""
-              name="q"
               placeholder="뭘 찾으세요..?"
               className="form-control tt-input"
               id="express-form-typeahead"
-              autocomplete="off"
-              spellcheck="false"
               dir="auto"
               type="text"
+              onChange={onChangeSearchBar}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  onClickSearchButton();
+                }
+              }}
             />
-          </form>
+          </div>
         </div>
       </div>
     </>

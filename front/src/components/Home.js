@@ -142,6 +142,11 @@ export default withRouter(function Home({ history, onChangeComponent }) {
               className="searchTerm"
               placeholder="뭘 찾으세요..?"
               onChange={onChangeSearchBar}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  onClickSearchButton();
+                }
+              }}
             />
             <button onClick={onClickSearchButton} className="searchButton">
               <SearchIcon />

@@ -103,7 +103,7 @@ export default withRouter(function Search({ history, location }) {
       scrollTop + clientHeight + 0.7998046875 >= scrollHeight &&
       isLoading === false
     ) {
-      getMoreReview();
+      getMoreReview(searchValue, page);
     }
   };
   const onChange = (e) => {
@@ -115,22 +115,28 @@ export default withRouter(function Search({ history, location }) {
     history.push(`/search?search=${value}`);
     setReviews([]);
     setPage(0);
-    getMoreReview();
+    getMoreReview(value, 0);
   };
-  const getMoreReview = async () => {
+  const getMoreReview = async (searchValue, page) => {
     setIsLoading(true);
     await axios
-      .get(`${BACK_URL}/review/search/${query.search}/${page}`)
+      .get(`${BACK_URL}/review/search/${searchValue}/${page}`)
       .then((res) => {
         if (res.data === "wait") {
           console.log("wait");
           setTimeout(() => {
-            getMoreReview();
+            getMoreReview(searchValue, page);
           }, 1000);
         } else {
           console.log(res.data, page);
           if (page === 0) {
-            setReviews(res.data);
+            if (res.data.length === 0) {
+              setTimeout(() => {
+                getMoreReview(searchValue, page);
+              }, 1000);
+            } else {
+              setReviews(res.data);
+            }
           } else {
             setReviews(reviews.concat(res.data));
           }
@@ -150,7 +156,7 @@ export default withRouter(function Search({ history, location }) {
   });
   useEffect(() => {
     setSearchValue(query.search);
-    getMoreReview();
+    getMoreReview(query.search, 0);
     return () => {};
   }, []);
   return (
@@ -164,6 +170,11 @@ export default withRouter(function Search({ history, location }) {
               placeholder="What are you looking for?"
               onChange={onChange}
               value={searchValue}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  onClick();
+                }
+              }}
             />
             <button onClick={onClick} className="searchButton">
               <SearchIcon />
