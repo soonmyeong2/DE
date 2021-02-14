@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.DefalutNewsDTO;
+import com.example.demo.dto.*;
 import com.example.demo.dto.DefalutNewsResponse;
-import com.example.demo.dto.ReviewDTO;
 import com.example.demo.repository.ReviewRepository;
+import com.example.demo.repository.ReviewResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,6 +20,8 @@ import java.util.Random;
 public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private ReviewResponseRepository reviewResponseRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -47,6 +49,54 @@ public class ReviewService {
         defalutNewsResponse.setNum(num);
 
         return defalutNewsResponse;
+    }
+    public List<CommentResponseDTO> createComment(String reviewId, CommentDTO comment) {
+        ReviewDTO review = reviewRepository.findById(reviewId).get();
+        List<CommentDTO> commentList = review.getComments();
+        int commentId = 0;
+        if (commentList== null || commentList.size()==0 ){
+            commentList = new ArrayList<>();
+        } else {
+            commentId = commentList.get(commentList.size()-1).getId() +1;
+        }
+        comment.setId(commentId);
+        commentList.add(comment);
+        review.setComments(commentList);
+        reviewRepository.save(review);
+        ReviewResponseDTO reviewResponseDTO = reviewResponseRepository.findById(reviewId).get();
+        List<CommentResponseDTO> commentResponseDTOListList = reviewResponseDTO.getComments();
+        return commentResponseDTOListList;
+
+    }
+    public List<CommentResponseDTO> deleteComment(String reviewId, int commentId,String password) {
+        ReviewDTO review = reviewRepository.findById(reviewId).get();
+        List<CommentDTO> commentList = review.getComments();
+
+        for (int i = 0; i <commentList.size() ; i++) {
+            if (commentList.get(i).getId() == commentId){
+                System.out.println(commentList.get(i).getPassword());
+
+                System.out.println(password);
+                if (commentList.get(i).getPassword().equals(password) ) {
+
+                    System.out.println(1);
+                    commentList.remove(i);
+                    review.setComments(commentList);
+                    reviewRepository.save(review);
+                    ReviewResponseDTO reviewResponseDTO = reviewResponseRepository.findById(reviewId).get();
+                    List<CommentResponseDTO> commentResponseDTOListList = reviewResponseDTO.getComments();
+
+                    System.out.println(reviewRepository.findById(reviewId).get());
+                    System.out.println(commentResponseDTOListList);
+                    return commentResponseDTOListList;
+                }
+                break;
+            }
+        }
+
+
+        return null;
+
     }
 
 }

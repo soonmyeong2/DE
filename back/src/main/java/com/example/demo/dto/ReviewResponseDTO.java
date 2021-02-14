@@ -1,16 +1,13 @@
 package com.example.demo.dto;
 
 import lombok.Data;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.lang.reflect.Array;
 import java.util.List;
-
 @Document(collection = "reviews")
 @Data
-public class ReviewDTO {
+public class ReviewResponseDTO {
     @Id
     private String _id;
     private String id;
@@ -54,7 +51,5 @@ public class ReviewDTO {
     private String merchantName;
     private boolean isMyReview;
     private String channelName;
-    private List<CommentDTO> comments;
-
-
+    private List<CommentResponseDTO> comments;
 }

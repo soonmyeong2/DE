@@ -29,7 +29,7 @@ public class DefalutNewsService {
 
     public List<Map> getDefalut(){
 
-        SampleOperation matchStage = Aggregation.sample(5);
+        SampleOperation matchStage = Aggregation.sample(9);
         Aggregation aggregation = Aggregation.newAggregation(matchStage);
         AggregationResults results = mongoTemplate.aggregate(aggregation, "reviews", Map.class);
         return  results.getMappedResults();

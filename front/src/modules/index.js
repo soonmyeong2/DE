@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import route from "./route";
-const rootReducer = combineReducers({ route });
+import info from "./info";
+const rootReducer = combineReducers({ route, info });
 
 export default rootReducer;
