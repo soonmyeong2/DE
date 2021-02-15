@@ -19,8 +19,8 @@ class Application(object):
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = []
-            for i in range(1, self.limit_page):
-                url = base_url + f"&pagingIndex={i}"
+            for i in range(1, self.limit_page, 3):
+                url = base_url + f"&pagingIndex={i + 0}"
                 future = executor.submit(self.get_item_info, url)
                 futures.append(future)
 

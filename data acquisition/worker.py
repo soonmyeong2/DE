@@ -1,7 +1,8 @@
 from time import sleep
 from tqdm import trange
-from app import Application
+from datetime import datetime
 
+from app import Application
 from reviewScraper import ReviewScraper
 
 
@@ -24,7 +25,6 @@ class Worker:
     def extract_data(self):
         for i in trange(len(self.links), desc="진행도"):
             if self.stop_thread.is_set():
-                print("program forced to stop!\n")
                 break
             else:
                 # print(f" ------------ {self.links[i]} ------------ ")
@@ -50,12 +50,13 @@ class Worker:
         while len(reviews) < limit:
             for page in range(1, pages + 1):
                 json = app.get_review_json(store_data['merchant_no'], store_data['product_no'], page)
-                json = filter(lambda dic: dic['reviewContentClassType'] != 'TEXT', json['contents'])
+                _json = list(filter(lambda dic: dic['reviewContentClassType'] != 'TEXT', json['contents']))
                 list(map(lambda data: data.update({
                     'channelName': store_data['channel_name'],
-                    'keyword': self.keyword
-                    }), json))
-                self.db.insert_item(json)
+                    'keyword': self.keyword,
+                    'timeStamp': datetime.now()
+                }), _json))
+                print(_json)
                 app.count_review(reviews, json)
                 sleep(self.delay_time)
                 if len(reviews) >= limit:
