@@ -1,8 +1,9 @@
 import { ViewDayOutlined, ViewModuleOutlined } from "@material-ui/icons";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "../css/TopBar.scss";
 import logo from "../image/logo.png";
 import React, { useState } from "react";
+import { Button } from "@material-ui/core";
 
 function SearchTopBar({ history, onUpdateSearchInfo }) {
   const [searchValue, setSearchValue] = useState("");
@@ -25,7 +26,6 @@ function SearchTopBar({ history, onUpdateSearchInfo }) {
       >
         <input
           required=""
-          placeholder="뭘 찾으세요..?"
           className="form-control tt-input"
           id="express-form-typeahead"
           dir="auto"
@@ -57,14 +57,26 @@ export default withRouter(function TopBar({
     <>
       <div className="bar">
         <div className="link-button">
-          {component ? (
-            <Link to="/">
+          {!component ? (
+            <Button
+              onClick={() => {
+                localStorage.setItem("component", JSON.stringify(!component));
+
+                onChangeComponent(!component);
+              }}
+            >
               <ViewDayOutlined fontSize="large"></ViewDayOutlined>
-            </Link>
+            </Button>
           ) : (
-            <Link to="/tile">
+            <Button
+              onClick={() => {
+                localStorage.setItem("component", JSON.stringify(!component));
+
+                onChangeComponent(!component);
+              }}
+            >
               <ViewModuleOutlined fontSize="large"></ViewModuleOutlined>
-            </Link>
+            </Button>
           )}
         </div>
         <img alt="logo" onClick={onClickLogo} className="logo" src={logo}></img>

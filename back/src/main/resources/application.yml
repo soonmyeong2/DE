@@ -15,6 +15,15 @@ spring:
     url: jdbc:postgresql://localhost:5432/test
     username: postgres
     password: 1234
+  kafka:
+
+    producer:
+      bootstrap-servers: 52.231.26.114:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+
 
 server:
   port: 8080

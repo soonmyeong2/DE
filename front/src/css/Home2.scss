@@ -15,7 +15,16 @@ body {
 }
 .content-modal-text {
   width: 560px;
+  height: 560px;
+  overflow: auto;
 }
+.content-modal-text::-webkit-scrollbar {
+  width: 10px;
+}
+.content-modal-text::-webkit-scrollbar-thumb {
+  background-color: grey;
+}
+
 .content-modal {
   display: flex;
   justify-content: center;
