@@ -73,7 +73,7 @@ function Comment({ comment, commentDelete, userInfo }) {
     </>
   );
 }
-function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
+function BasicReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
   const [review, setReview] = useState(reviewProp);
   const [comment, setComment] = useState({ text: "", name: "", password: "" });
   const [commentOnOff, setCommnetOnOff] = useState(false);
@@ -107,7 +107,7 @@ function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
   };
 
   const commentWrite = async () => {
-    console.log(review._id, comment);
+    console.log(review.id, comment);
     await axios
       .post(`${BACK_URL}/review/${review._id}/comment/`, comment)
       .then((res) => {
@@ -142,7 +142,7 @@ function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
     <>
       <div className="content">
         <div className="content-header">
-          <Avatar src={imageTemp}></Avatar>
+          <Avatar>{review.reviewScore > 3 ? "😊" : "😒"}</Avatar>
           <h3>{review.productName}</h3>
         </div>
         {review.reviewContentClassType === "PHOTO" ? (
@@ -151,21 +151,30 @@ function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
           </div>
         ) : null}
         <div className="content-text">
+          <p>{"⭐".repeat(parseInt(review.reviewScore))}</p>
           <small>
-            {review.writerMemberId}/
+            {review.writerMemberId}
+            {(function () {
+              const reviewTemp = review.createDate.split("T");
+              const reviewTemp2 = reviewTemp[1].split(".");
+              return "/" + reviewTemp[0] + " " + reviewTemp2[0];
+            })()}
+          </small>
+          <br />
+          <br />
+          <small>
             {review.productOptionContent
               ? review.productOptionContent + "/"
               : null}
             {review.channelName}
           </small>
           <p>{review.reviewContent}</p>
-          <p className="content-more">더보기..{review._id}</p>
         </div>
         <div className="content-info"></div>
         <div className="content-action">
           <div className="content-action-frond">
             <IconButton onClick={clickCommentOnOff}>
-              <ChatBubbleOutline />{" "}
+              <ChatBubbleOutline />
               {review.comments ? review.comments.length : 0}
             </IconButton>
             <IconButton>
@@ -222,7 +231,7 @@ function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
                   type="password"
                   label="비밀번호"
                   value={comment.password}
-                  style={{ width: "70px", marginRight: "10px" }}
+                  style={{ width: "90px", marginRight: "10px" }}
                   onChange={(e) => commentInputHadler(e, "password")}
                 />
               </div>
@@ -256,4 +265,4 @@ function ReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
   );
 }
 
-export default ReviewUnit;
+export default BasicReviewUnit;
