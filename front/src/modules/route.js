@@ -6,7 +6,7 @@ export const changeComponent = (component) => ({
 });
 
 export const initialState = {
-  component: "",
+  component: true, //true: basic, false: tile
 };
 
 export default function route(state = initialState, action) {
@@ -14,7 +14,7 @@ export default function route(state = initialState, action) {
     case CHANGE_COMPONENT:
       return {
         ...state,
-        component: action.component,
+        component: !action.component,
       };
     default:
       return state;

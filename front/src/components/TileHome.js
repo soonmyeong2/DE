@@ -127,7 +127,7 @@ function ReviewUnit({ review }) {
   );
 }
 
-export default function Tile({ onChangeComponent }) {
+export default function TileHome({ onChangeComponent }) {
   const contents = [];
   const [isLoading, setIsLoading] = useState(false);
 

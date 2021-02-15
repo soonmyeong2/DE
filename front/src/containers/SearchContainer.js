@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import Search from "../components/Search";
+import Search from "../components/SearchHome";
 import { updateUserInfo } from "../modules/info";
 export default function SearchContainer() {
   const { userInfo } = useSelector((state) => ({

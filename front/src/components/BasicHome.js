@@ -11,6 +11,8 @@ import React, { useEffect, useState } from "react";
 import Loadding from "./Loading";
 import { withRouter } from "react-router-dom";
 import { BACK_URL } from "../api/api";
+import SearchInput from "./SearchInput";
+import SearchInputContainer from "../containers/SearchInputContainer";
 function ReviewUnit({ review }) {
   const [commentOnOff, setCommnetOnOff] = useState(false);
 
@@ -25,11 +27,10 @@ function ReviewUnit({ review }) {
           <Avatar src={imageTemp}></Avatar>
           <h3>{review.productName}</h3>
         </div>
-        {review.reviewContentClassType === "PHOTO" ? (
-          <div className="content-media">
-            <Carousel images={review.reviewAttaches} />
-          </div>
-        ) : null}
+
+        <div className="content-media">
+          <Carousel images={review.reviewAttaches} />
+        </div>
         <div className="content-text">
           <small>
             {review.writerMemberId}/
@@ -84,36 +85,23 @@ function ReviewUnit({ review }) {
   );
 }
 
-export default withRouter(function Home({ history, onChangeComponent }) {
-  const contents = [];
-
+export default withRouter(function BasicHome({ onChangeComponent }) {
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
 
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
     if (
-      scrollTop + clientHeight + 0.7998046875 >= scrollHeight &&
+      scrollTop + clientHeight + 6000 >= scrollHeight &&
       isLoading === false
     ) {
-      getMoreReview();
+      setIsLoading(true);
     }
   };
 
-  const onChangeSearchBar = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  const onClickSearchButton = () => {
-    const value = searchValue;
-    history.push(`/search?search=${value}`);
-  };
-
   const getMoreReview = async () => {
-    setIsLoading(true);
     await axios.get(`${BACK_URL}/review`).then((res) => {
       setReviews(reviews.concat(res.data));
     });
@@ -122,44 +110,31 @@ export default withRouter(function Home({ history, onChangeComponent }) {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     window.addEventListener("scroll", handleScroll);
     onChangeComponent("home");
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  });
-  useEffect(() => {
-    getMoreReview();
   }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      getMoreReview();
+    }
+    return () => {};
+  }, [isLoading]);
 
   return (
     <>
       <div className="content-list">
         <div className="content">
-          <div className="search">
-            <input
-              type="text"
-              className="searchTerm"
-              placeholder="뭘 찾으세요..?"
-              onChange={onChangeSearchBar}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  onClickSearchButton();
-                }
-              }}
-            />
-            <button onClick={onClickSearchButton} className="searchButton">
-              <SearchIcon />
-            </button>
-          </div>
+          <SearchInputContainer />
         </div>
         {reviews.map((review) => (
           <ReviewUnit key={review.id} review={review} />
         ))}
-        <div
-          // className="visible"
-          className={isLoading ? "visible" : "invisible"}
-        >
+        <div className={isLoading ? "visible" : "invisible"}>
           <Loadding />
         </div>
       </div>
