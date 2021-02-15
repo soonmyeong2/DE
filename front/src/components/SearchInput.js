@@ -11,7 +11,6 @@ function SearchInput({ history, onUpdateSearchInfo }) {
   const onClickSearchButton = () => {
     onUpdateSearchInfo(searchValue);
     history.push(`/search?search=${searchValue}`);
-    history.go();
   };
   return (
     <>
@@ -19,6 +18,7 @@ function SearchInput({ history, onUpdateSearchInfo }) {
         <input
           type="text"
           className="searchTerm"
+          placeholder="뭘 찾으세요..?"
           onChange={onChangeSearchBar}
           onKeyPress={(e) => {
             if (e.key === "Enter") {

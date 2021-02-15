@@ -1,20 +1,19 @@
 import "../css/Home.scss";
+import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Loadding from "./Loading";
 import { withRouter } from "react-router-dom";
 import qs from "qs";
 import { BACK_URL } from "../api/api";
-import BasicReviewUnit from "./BasicReviewUnit";
+import ReviewUnit from "./Reviewunit";
 import SearchInputContainer from "../containers/SearchInputContainer";
-import TileReviewUnit from "./TileReviewUnit";
 
 export default withRouter(function SearchHome({
   history,
   location,
   onUpdateUserInfo,
   userInfo,
-  component,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -30,7 +29,6 @@ export default withRouter(function SearchHome({
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
-
     if (
       scrollTop + clientHeight + 6000 >= scrollHeight &&
       isLoading === false
@@ -64,7 +62,6 @@ export default withRouter(function SearchHome({
                 getMoreReview(searchValue, page);
               }, 1000);
             } else {
-              console.log(res.data);
               setReviews(res.data);
             }
           } else {
@@ -74,7 +71,6 @@ export default withRouter(function SearchHome({
         }
       });
 
-    console.log(reviews);
     setIsLoading(false);
   };
 
@@ -107,27 +103,14 @@ export default withRouter(function SearchHome({
         <div className="content">
           <SearchInputContainer />
         </div>
-        {(function () {
-          if (component) {
-            return reviews.map((review) => (
-              <BasicReviewUnit
-                key={review._id}
-                reviewProp={review}
-                onUpdateUserInfo={onUpdateUserInfo}
-                userInfo={userInfo}
-              />
-            ));
-          } else {
-            return reviews.map((review) => (
-              <TileReviewUnit
-                key={review._id}
-                reviewProp={review}
-                onUpdateUserInfo={onUpdateUserInfo}
-                userInfo={userInfo}
-              />
-            ));
-          }
-        })()}
+        {reviews.map((review) => (
+          <ReviewUnit
+            key={review._id}
+            reviewProp={review}
+            onUpdateUserInfo={onUpdateUserInfo}
+            userInfo={userInfo}
+          />
+        ))}
         <div className={isLoading ? "visible" : "invisible"}>
           <Loadding />
         </div>

@@ -7,14 +7,14 @@ import com.example.demo.repository.ReviewResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.SampleOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ReviewService {
@@ -25,14 +25,9 @@ public class ReviewService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<Map> getDefalut() {
-
-        SampleOperation matchStage = Aggregation.sample(9);
-        Aggregation aggregation = Aggregation.newAggregation(matchStage);
-        AggregationResults results = mongoTemplate.aggregate(aggregation, "reviews", ReviewResponseDTO.class);
-        return results.getMappedResults();
+    public List<ReviewDTO> getAll(){
+        return  reviewRepository.findAll();
     }
-
 
     public List<ReviewDTO> getSearch(String keyword,int page){
         Query query = new Query();
@@ -40,7 +35,21 @@ public class ReviewService {
         List<ReviewDTO> li = mongoTemplate.find(query.limit(9).skip(page*9), ReviewDTO.class);
         return  li;
     }
+    public DefalutNewsResponse getDefaultNewsReviewList(DefalutNewsDTO defalutNewsDTO,int num){
+        List<ReviewDTO> reviewList = new ArrayList<>();
+        List<String> reviewsId = defalutNewsDTO.getReviews();
+        Random random = new Random();
+        for (int i = 0; i < 20; i++) {
+            num += random.nextInt(4)+1;
+            ReviewDTO reviewDTO = reviewRepository.findById(reviewsId.get(num)).get();
+            reviewList.add(reviewDTO);
+        }
+        DefalutNewsResponse defalutNewsResponse = new DefalutNewsResponse();
+        defalutNewsResponse.setReviewList(reviewList);
+        defalutNewsResponse.setNum(num);
 
+        return defalutNewsResponse;
+    }
     public List<CommentResponseDTO> createComment(String reviewId, CommentDTO comment) {
         ReviewDTO review = reviewRepository.findById(reviewId).get();
         List<CommentDTO> commentList = review.getComments();

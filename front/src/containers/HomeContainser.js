@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import Home from "../components/Home";
+import BasicHome from "../components/BasicHome";
 import SearchHome from "../components/SearchHome";
 import { changeComponent } from "../modules/route";
 import { Route } from "react-router-dom";
@@ -16,6 +16,9 @@ export default function HomeContainer() {
   const onUpdateUserInfo = (newUserInfo) =>
     dispatch(updateUserInfo(newUserInfo));
 
+  const onUpdateSearchInfo = (newSearch) =>
+    dispatch(updateSearchInfo(newSearch));
+
   const onChangeComponent = (component) => dispatch(changeComponent(component));
 
   return (
@@ -24,12 +27,11 @@ export default function HomeContainer() {
         path="/"
         exact
         render={() => (
-          <Home
+          <BasicHome
             component={component}
-            onUpdateUserInfo={onUpdateUserInfo}
+            onUpdateSearchInfo={onUpdateSearchInfo}
             onChangeComponent={onChangeComponent}
             searchInfo={searchInfo}
-            userInfo={userInfo}
           />
         )}
       />
@@ -40,6 +42,7 @@ export default function HomeContainer() {
         render={() => (
           <SearchHome
             component={component}
+            onUpdateSearchInfo={onUpdateSearchInfo}
             onUpdateUserInfo={onUpdateUserInfo}
             userInfo={userInfo}
           />
