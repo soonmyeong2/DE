@@ -39,7 +39,6 @@ export default function info(state = initialState, action) {
       if (tempSearchInfo.length > 10) {
         tempSearchInfo.shift();
       }
-      localStorage.setItem("searchInfo", JSON.stringify(tempSearchInfo));
       return {
         ...state,
         searchInfo: [...tempSearchInfo],

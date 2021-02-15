@@ -1,6 +1,5 @@
 body {
   background-color: rgb(235, 233, 233);
-  min-height: 2000px;
 }
 
 .contents-box {
@@ -10,8 +9,10 @@ body {
   justify-content: center;
 }
 .visible {
-  display: block;
+  display:block ;
 }
 .invisible {
   display: none;
 }
+
+

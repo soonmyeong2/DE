@@ -10,7 +10,7 @@ export default function TopBarContainer() {
   const dispatch = useDispatch();
   const onUpdateSearchInfo = (newSearch) =>
     dispatch(updateSearchInfo(newSearch));
-  const onChangeComponent = (component) => dispatch(changeComponent(component));
+  const onChangeComponent = (newSearch) => dispatch(changeComponent(newSearch));
 
   return (
     <>
