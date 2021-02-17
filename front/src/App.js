@@ -4,8 +4,6 @@ import HomeContainer from "./containers/HomeContainser";
 import TopBarContainer from "./containers/TopBarContainer";
 import { useState } from "react";
 function App() {
-  const [referrer, setReferrer] = useState(document.referrer);
-  console.log(referrer);
   return (
     <div className="app">
       <TopBarContainer />
