@@ -1,9 +1,5 @@
 import { IconButton } from "@material-ui/core";
-import {
-  ArrowBackIos,
-  ArrowForwardIos,
-  ChatBubbleOutline,
-} from "@material-ui/icons";
+import { ArrowBackIos, ArrowForwardIos } from "@material-ui/icons";
 import React, { useEffect, useState, useRef } from "react";
 import "../css/Carousel.scss";
 

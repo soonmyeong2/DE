@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.*;
-import com.example.demo.dto.DefalutNewsResponse;
 import com.example.demo.repository.ReviewRepository;
 import com.example.demo.repository.ReviewResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +24,65 @@ public class ReviewService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<Map> getDefalut() {
+    Random rand = new Random();
 
-        SampleOperation matchStage = Aggregation.sample(9);
-        Aggregation aggregation = Aggregation.newAggregation(matchStage);
-        AggregationResults results = mongoTemplate.aggregate(aggregation, "reviews", ReviewResponseDTO.class);
-        return results.getMappedResults();
+    public List<ReviewResponseDTO> getDefalut(List<String> searchInfo,Long num) {
+
+//        SampleOperation matchStage = Aggregation.sample(9);
+//        Aggregation aggregation = Aggregation.newAggregation(matchStage);
+//        AggregationResults results = mongoTemplate.aggregate(aggregation, "reviews", ReviewResponseDTO.class);
+
+
+
+//        Long reviewCount = mongoTemplate.estimatedCount(ReviewResponseDTO.class);
+        List<ReviewResponseDTO> resultList = new ArrayList<>();
+
+        Query query = null;
+        int cnt = 3;
+
+        for (int i = 0; i < 9; i++) {
+
+            if(searchInfo.size() > i && rand.nextBoolean()){
+
+                query = new Query();
+                query.addCriteria(Criteria.where("keyword").is(searchInfo.get(i)));
+                Long reviewCount =  mongoTemplate.count(query,ReviewResponseDTO.class);
+                if (reviewCount - i - num >= 0) {
+                    resultList.add(mongoTemplate.findOne(query.limit(1).skip(reviewCount- i - num), ReviewResponseDTO.class));
+                    continue;
+                }
+
+            }
+
+            cnt +=1;
+
+
+        }
+        System.out.println(123);
+        for (int i = cnt; i > 0; i--) {
+            query = new Query();
+            query.addCriteria(Criteria.where("randomId").gt(rand.nextFloat()));
+            ReviewResponseDTO reviewResponseDTO = mongoTemplate.findOne(query, ReviewResponseDTO.class);
+            if (reviewResponseDTO ==null){
+                query = new Query();
+                query.addCriteria(Criteria.where("randomId").lte(rand.nextFloat()));
+                reviewResponseDTO = mongoTemplate.findOne(query, ReviewResponseDTO.class);
+            }
+
+            System.out.println(1234);
+            resultList.add(reviewResponseDTO);
+
+        }
+
+
+        return resultList;
     }
 
 
-    public List<ReviewDTO> getSearch(String keyword,int page){
+    public List<ReviewResponseDTO> getSearch(String keyword,int page){
         Query query = new Query();
         query.addCriteria(Criteria.where("keyword").is(keyword));
-        List<ReviewDTO> li = mongoTemplate.find(query.limit(9).skip(page*9), ReviewDTO.class);
+        List<ReviewResponseDTO> li = mongoTemplate.find(query.limit(9).skip(page*9), ReviewResponseDTO.class);
         return  li;
     }
 
