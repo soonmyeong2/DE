@@ -16,12 +16,12 @@ def keyword_count(keyword, db):
 
 
 def is_keyword_searched(keyword, db):
-    collection = db['reviews']
+    collection = db['keyword']
     data = collection.find_one({"keyword": keyword})
     try:
         return (datetime.now() - data['timeStamp']).seconds < 3600 * 24
     except:
-        return bool(data)
+        return False
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -30,14 +30,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     db = connection['REVIEW_EARLY']
     logging.info(f'Python HTTP trigger function processed a request. (keyword={keyword})')
 
-    keyword_count(keyword, db)
     if is_keyword_searched(keyword, db):
         return func.HttpResponse("this keyword has already been found.", status_code=204)
 
     crawlers = [
         # crawler API
     ]
-
+    
+    keyword_count(keyword, db)
     rs = (grequests.get(crawler, timeout=1) for crawler in crawlers)
     grequests.map(rs)
     return func.HttpResponse(f"crawler has run.", status_code=201)
