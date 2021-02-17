@@ -32,7 +32,7 @@ export default withRouter(function SearchHome({
     const clientHeight = document.documentElement.clientHeight;
 
     if (
-      scrollTop + clientHeight + 6000 >= scrollHeight &&
+      scrollTop + clientHeight + 1500 >= scrollHeight &&
       isLoading === false
     ) {
       setIsLoading(true);

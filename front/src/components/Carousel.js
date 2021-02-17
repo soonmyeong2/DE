@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../css/Carousel.scss";
 
 function Slide({ image }) {
-  return <img className="carousel-img" src={image} />;
+  return <img className="carousel-img" src={image + "?type=f300_300"} />;
 }
 
 export default function Carousel({ images }) {
