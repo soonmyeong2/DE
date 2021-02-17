@@ -69,10 +69,6 @@ export default withRouter(function LikeHome({
   return (
     <>
       <div className="content-list">
-        <div className="content">
-          <SearchInputContainer />
-        </div>
-
         {(function () {
           if (component === true) {
             return reviews.map((review) => (
