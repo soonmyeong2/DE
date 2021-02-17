@@ -2,9 +2,6 @@ import { Backdrop, Fade, Modal } from "@material-ui/core";
 import { useEffect, useState } from "react";
 function ModalForm({ openProp, children, onOpenProp }) {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);

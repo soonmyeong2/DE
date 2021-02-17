@@ -1,10 +1,11 @@
 import { ViewDayOutlined, ViewModuleOutlined } from "@material-ui/icons";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "../css/TopBar.scss";
 import logo from "../image/logo.png";
 import React, { useState } from "react";
+import { Button } from "@material-ui/core";
 
-function SearchTopBar({ history, onUpdateSearchInfo }) {
+function SearchTopBar({ history, onUpdateSearchInfo, onChangeSearch }) {
   const [searchValue, setSearchValue] = useState("");
 
   const onChangeSearchBar = (e) => {
@@ -13,8 +14,9 @@ function SearchTopBar({ history, onUpdateSearchInfo }) {
 
   const onClickSearchButton = () => {
     onUpdateSearchInfo(searchValue);
+    onChangeSearch(searchValue);
     history.push(`/search?search=${searchValue}`);
-    history.go();
+    // history.go();
   };
   return (
     <>
@@ -25,7 +27,6 @@ function SearchTopBar({ history, onUpdateSearchInfo }) {
       >
         <input
           required=""
-          placeholder="뭘 찾으세요..?"
           className="form-control tt-input"
           id="express-form-typeahead"
           dir="auto"
@@ -47,24 +48,44 @@ export default withRouter(function TopBar({
   component,
   onUpdateSearchInfo,
   onChangeComponent,
+  onChangeSearch,
+  search,
 }) {
   const onClickLogo = () => {
     history.push("/");
-    history.go();
+    if (search == "") {
+      history.go();
+    } else {
+      onChangeSearch("");
+    }
+
+    window.scrollTo(0, 0);
   };
 
   return (
     <>
       <div className="bar">
         <div className="link-button">
-          {component ? (
-            <Link to="/">
+          {!component ? (
+            <Button
+              onClick={() => {
+                localStorage.setItem("component", JSON.stringify(!component));
+
+                onChangeComponent(!component);
+              }}
+            >
               <ViewDayOutlined fontSize="large"></ViewDayOutlined>
-            </Link>
+            </Button>
           ) : (
-            <Link to="/tile">
+            <Button
+              onClick={() => {
+                localStorage.setItem("component", JSON.stringify(!component));
+
+                onChangeComponent(!component);
+              }}
+            >
               <ViewModuleOutlined fontSize="large"></ViewModuleOutlined>
-            </Link>
+            </Button>
           )}
         </div>
         <img alt="logo" onClick={onClickLogo} className="logo" src={logo}></img>
@@ -72,6 +93,7 @@ export default withRouter(function TopBar({
           <SearchTopBar
             history={history}
             onUpdateSearchInfo={onUpdateSearchInfo}
+            onChangeSearch={onChangeSearch}
           />
         </div>
       </div>
