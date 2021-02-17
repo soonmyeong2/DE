@@ -49,11 +49,17 @@ export default withRouter(function TopBar({
   onUpdateSearchInfo,
   onChangeComponent,
   onChangeSearch,
+  search,
 }) {
   const onClickLogo = () => {
     history.push("/");
-    onChangeSearch("");
-    history.go();
+    if (search == "") {
+      history.go();
+    } else {
+      onChangeSearch("");
+    }
+
+    window.scrollTo(0, 0);
   };
 
   return (

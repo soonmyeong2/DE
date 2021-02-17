@@ -78,12 +78,39 @@ public class ReviewService {
         return resultList;
     }
 
-
+//    public boolean getPossible(String keyword, int page){
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("keyword").is(keyword));
+//        Long reviewCount =  mongoTemplate.count(query,ReviewResponseDTO.class);
+//        System.out.println(reviewCount);
+//        if(reviewCount >= (page+1)*180){
+//            return true;
+//        }
+//        return false;
+//    }
     public List<ReviewResponseDTO> getSearch(String keyword,int page){
+        List<ReviewResponseDTO> reviewResponseDTOList = new ArrayList<>();
+        int randomNums[] = new int[9];
         Query query = new Query();
         query.addCriteria(Criteria.where("keyword").is(keyword));
-        List<ReviewResponseDTO> li = mongoTemplate.find(query.limit(9).skip(page*9), ReviewResponseDTO.class);
-        return  li;
+        for (int i = 0; i < 9; i++) {
+            randomNums[i] = (int)(Math.random()*180);
+
+            for (int j = 0; j < i; j++) {
+                if(randomNums[i] ==randomNums[j]){
+                    i--;
+                    break;
+                }
+            }
+
+        }
+
+        for (int i = 0; i < 9; i++) {
+            reviewResponseDTOList.add(mongoTemplate.findOne(query.skip(page * 180+randomNums[i]), ReviewResponseDTO.class));
+        }
+
+        reviewResponseDTOList = mongoTemplate.find(query.skip(page * 9).limit(9), ReviewResponseDTO.class);
+        return  reviewResponseDTOList;
     }
 
     public List<CommentResponseDTO> createComment(String reviewId, CommentDTO comment) {
