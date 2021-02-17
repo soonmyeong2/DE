@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeComponent, changeSearch } from "../modules/route";
 import { updateSearchInfo } from "../modules/info";
 export default function TopBarContainer() {
-  const { component } = useSelector((state) => ({
+  const { component, search } = useSelector((state) => ({
     component: state.route.component,
+    search: state.route.search,
   }));
   const dispatch = useDispatch();
   const onUpdateSearchInfo = (newSearch) =>
@@ -21,6 +22,7 @@ export default function TopBarContainer() {
         onChangeComponent={onChangeComponent}
         onUpdateSearchInfo={onUpdateSearchInfo}
         onChangeSearch={onChangeSearch}
+        search={search}
       />
     </>
   );

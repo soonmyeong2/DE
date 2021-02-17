@@ -2,13 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CommentDTO;
 import com.example.demo.dto.CommentResponseDTO;
-import com.example.demo.dto.ReviewDTO;
 import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.service.KafkaService;
 import com.example.demo.service.ReviewService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +50,6 @@ public class ReviewController {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-//            conn.setConnectTimeout(3000); // 3초
-//            // 읽기 타임아웃 설정
-//            conn.setReadTimeout(3000); // 3초-
-
-
             if (conn.getResponseCode() == 201) {
 
                 System.out.println("getResponseCode():" + conn.getResponseCode());
@@ -72,12 +63,11 @@ public class ReviewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         List<ReviewResponseDTO> reviewList = reviewService.getSearch(keyword, page);
-        System.out.println(12);
 
-        return new ResponseEntity<List<ReviewResponseDTO>>(reviewList, HttpStatus.OK);
+
+        return new ResponseEntity<>(reviewList, HttpStatus.OK);
+
     }
 
     @GetMapping("")
