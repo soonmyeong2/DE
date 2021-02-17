@@ -100,3 +100,9 @@
   padding: 20px;
   background-color: white;
 }
+.title {
+  width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -92,6 +92,28 @@ public class ReviewController {
 
     }
 
+    @GetMapping("/like")
+    ResponseEntity<?> getLikeReviewList(HttpServletRequest request,
+
+                                    @RequestParam(value = "page") int page,
+                                    @RequestParam(value = "like-info") List<String> likeInfo,
+                                    @RequestHeader(value="Host") String host,
+                                    @RequestHeader(value="Origin") String origin,
+                                    @RequestHeader(value="Referer") String referer,
+                                    @RequestHeader(value="User-Agent") String userAgent,
+                                    @RequestHeader(value="Accept-Encoding") String acceptEncoding
+    ) {
+
+
+        kafkaService.sendUserLog(host,origin,referer,userAgent,acceptEncoding,request.getRemoteAddr(),"getLikeReviewList");
+
+        List<ReviewResponseDTO> defalutNewsList = reviewService.getLike(likeInfo,page);
+
+
+        return new ResponseEntity<>(defalutNewsList, HttpStatus.OK);
+
+    }
+
     @PostMapping("/{reviewId}/comment/")
     ResponseEntity<?> createComment(HttpServletRequest request,
                                     @RequestHeader(value="Host") String host,
