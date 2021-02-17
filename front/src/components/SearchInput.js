@@ -1,7 +1,7 @@
 import SearchIcon from "@material-ui/icons/Search";
 import { useState } from "react";
 import { withRouter } from "react-router-dom";
-function SearchInput({ history, onUpdateSearchInfo }) {
+function SearchInput({ history, onUpdateSearchInfo, onChangeSearch }) {
   const [searchValue, setSearchValue] = useState("");
 
   const onChangeSearchBar = (e) => {
@@ -10,8 +10,9 @@ function SearchInput({ history, onUpdateSearchInfo }) {
 
   const onClickSearchButton = () => {
     onUpdateSearchInfo(searchValue);
+    onChangeSearch(searchValue);
     history.push(`/search?search=${searchValue}`);
-    history.go();
+    // history.go();
   };
   return (
     <>

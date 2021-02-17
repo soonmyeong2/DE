@@ -15,6 +15,7 @@ export default withRouter(function SearchHome({
   onUpdateUserInfo,
   userInfo,
   component,
+  search,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -39,30 +40,22 @@ export default withRouter(function SearchHome({
     }
   };
 
-  const onChange = (e) => {
-    setSearchInputValue(e.target.value);
-  };
-
-  const onClick = () => {
-    setSearchValue(searchInputValue);
-  };
-
-  const getMoreReview = async (searchValue, page) => {
+  const getMoreReview = async (search, page) => {
     await axios
-      .get(`${BACK_URL}/review/search/${searchValue}/${page}`)
+      .get(`${BACK_URL}/review/search/${search}/${page}`)
       .then((res) => {
         if (res.data === "wait") {
           console.log("wait");
           setTimeout(() => {
-            getMoreReview(searchValue, page);
+            getMoreReview(search, page);
           }, 1000);
         } else {
           console.log(res.data, page);
           if (page === 0) {
             if (res.data.length === 0) {
               setTimeout(() => {
-                getMoreReview(searchValue, page);
-              }, 1000);
+                getMoreReview(search, page);
+              }, 3000);
             } else {
               console.log(res.data);
               setReviews(res.data);
@@ -79,7 +72,6 @@ export default withRouter(function SearchHome({
   };
 
   useEffect(() => {
-    setSearchValue(query.search);
     window.addEventListener("scroll", handleScroll);
 
     return () => {
@@ -90,13 +82,13 @@ export default withRouter(function SearchHome({
   useEffect(() => {
     setPage(0);
     setIsLoading(true);
-    history.push(`/search?search=${searchValue}`);
+    // history.push(`/search?search=${searchValue}`);
     return () => {};
-  }, [searchValue]);
+  }, [search]);
 
   useEffect(() => {
     if (isLoading) {
-      getMoreReview(searchValue, page);
+      getMoreReview(search, page);
     }
     return () => {};
   }, [isLoading]);
