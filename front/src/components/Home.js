@@ -13,8 +13,10 @@ export default withRouter(function Home({
   onUpdateUserInfo,
   userInfo,
   searchInfo,
+  likeInfo,
+  onUpdateLikeInfo,
 }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
 
   const [numIndex, setNumIndex] = useState(0);
@@ -56,6 +58,9 @@ export default withRouter(function Home({
         setReviews(reviews.concat(res.data));
         setNumIndex(numIndex + 1);
         console.log(reviews);
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
     setIsLoading(false);
@@ -63,11 +68,15 @@ export default withRouter(function Home({
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    setIsLoading(true);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  });
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   return () => {};
+  // }, []);
 
   useEffect(() => {
     if (isLoading) {
@@ -91,6 +100,8 @@ export default withRouter(function Home({
                 reviewProp={review}
                 onUpdateUserInfo={onUpdateUserInfo}
                 userInfo={userInfo}
+                likeInfo={likeInfo}
+                onUpdateLikeInfo={onUpdateLikeInfo}
               />
             ));
           } else {
@@ -100,6 +111,8 @@ export default withRouter(function Home({
                 reviewProp={review}
                 onUpdateUserInfo={onUpdateUserInfo}
                 userInfo={userInfo}
+                likeInfo={likeInfo}
+                onUpdateLikeInfo={onUpdateLikeInfo}
               />
             ));
           }

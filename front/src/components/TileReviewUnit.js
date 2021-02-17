@@ -4,8 +4,14 @@ import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
 import ShoppingCartOutlined from "@material-ui/icons/ShoppingCartOutlined";
 
 import { BACK_URL } from "../api/api";
-import { Avatar, Button, IconButton, TextField } from "@material-ui/core";
-import { FavoriteBorderOutlined } from "@material-ui/icons";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
+import { Favorite, FavoriteBorderOutlined } from "@material-ui/icons";
 import axios from "axios";
 import Carousel from "./Carousel";
 import React, { useEffect, useState } from "react";
@@ -73,10 +79,30 @@ function Comment({ comment, commentDelete, userInfo }) {
     </>
   );
 }
-function TileReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
+function TileReviewUnit({
+  reviewProp,
+  userInfo,
+  onUpdateUserInfo,
+  likeInfo,
+  onUpdateLikeInfo,
+}) {
   const [review, setReview] = useState(reviewProp);
   const [comment, setComment] = useState({ text: "", name: "", password: "" });
   const [open, setOpen] = useState(false);
+  const [like, setLike] = useState(false);
+  const clickLikeOnOff = () => {
+    if (like) {
+      likeInfo.splice(likeInfo.indexOf(review._id), 1);
+      onUpdateLikeInfo(likeInfo.concat());
+      localStorage.setItem("likeInfo", JSON.stringify(likeInfo));
+    } else {
+      likeInfo.push(review._id);
+      onUpdateLikeInfo(likeInfo.concat());
+      localStorage.setItem("likeInfo", JSON.stringify(likeInfo));
+    }
+    setLike(!like);
+    console.log(likeInfo);
+  };
   const commentInputHadler = (e, key) => {
     if (key === "text" && e.target.value.length === 20) {
     } else if (key === "name" && e.target.value.length === 8) {
@@ -123,7 +149,12 @@ function TileReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
         setReview({ ...review, comments: res.data });
       });
   };
-
+  useEffect(() => {
+    if (likeInfo.includes(review._id)) {
+      setLike(true);
+    }
+    return () => {};
+  }, []);
   useEffect(() => {
     if (userInfo) {
       setComment({
@@ -148,7 +179,9 @@ function TileReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
         <div className="paper">
           <div className="content-header">
             <Avatar>{review.reviewScore > 3 ? "😊" : "😒"}</Avatar>
-            <h3>{review.productName}</h3>
+            <Tooltip title={review.productName}>
+              <h3>{review.productName}</h3>
+            </Tooltip>
           </div>
           <div className="content-modal">
             {review.reviewContentClassType === "PHOTO" ? (
@@ -176,17 +209,23 @@ function TileReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
                     : null}
                   {review.channelName}
                 </small>
+                <br />
+                <br />
                 <p>{review.reviewContent}</p>
               </div>
               <div className="content-info"></div>
               <div className="content-action">
                 <div className="content-action-frond">
+                  <IconButton onClick={clickLikeOnOff}>
+                    {like ? (
+                      <Favorite style={{ color: "red" }} />
+                    ) : (
+                      <FavoriteBorderOutlined />
+                    )}
+                  </IconButton>
                   <IconButton>
                     <ChatBubbleOutline />
                     {review.comments ? review.comments.length : 0}
-                  </IconButton>
-                  <IconButton>
-                    <FavoriteBorderOutlined />
                   </IconButton>
                 </div>
                 <div className="content-action-back">

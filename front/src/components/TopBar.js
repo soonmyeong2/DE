@@ -1,4 +1,8 @@
-import { ViewDayOutlined, ViewModuleOutlined } from "@material-ui/icons";
+import {
+  FavoriteBorderOutlined,
+  ViewDayOutlined,
+  ViewModuleOutlined,
+} from "@material-ui/icons";
 import { withRouter } from "react-router-dom";
 import "../css/TopBar.scss";
 import logo from "../image/logo.png";
@@ -53,7 +57,7 @@ export default withRouter(function TopBar({
 }) {
   const onClickLogo = () => {
     history.push("/");
-    if (search == "") {
+    if (search === "") {
       history.go();
     } else {
       onChangeSearch("");
@@ -71,6 +75,7 @@ export default withRouter(function TopBar({
               onClick={() => {
                 localStorage.setItem("component", JSON.stringify(!component));
 
+                window.scrollTo(0, 0);
                 onChangeComponent(!component);
               }}
             >
@@ -79,6 +84,7 @@ export default withRouter(function TopBar({
           ) : (
             <Button
               onClick={() => {
+                window.scrollTo(0, 0);
                 localStorage.setItem("component", JSON.stringify(!component));
 
                 onChangeComponent(!component);
@@ -87,9 +93,13 @@ export default withRouter(function TopBar({
               <ViewModuleOutlined fontSize="large"></ViewModuleOutlined>
             </Button>
           )}
+
+          <Button>
+            <FavoriteBorderOutlined onClick={() => history.push(`/like`)} />
+          </Button>
         </div>
         <img alt="logo" onClick={onClickLogo} className="logo" src={logo}></img>
-        <div>
+        <div style={{ display: "flex" }}>
           <SearchTopBar
             history={history}
             onUpdateSearchInfo={onUpdateSearchInfo}

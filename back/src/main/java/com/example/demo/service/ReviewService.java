@@ -112,7 +112,14 @@ public class ReviewService {
         reviewResponseDTOList = mongoTemplate.find(query.skip(page * 9).limit(9), ReviewResponseDTO.class);
         return  reviewResponseDTOList;
     }
+    public List<ReviewResponseDTO> getLike(List<String> likeInfo, int page){
+        List<ReviewResponseDTO> reviewResponseDTOList = new ArrayList<>();
+        for (int i = page*9; i < likeInfo.size(); i++) {
+            reviewResponseDTOList.add(reviewResponseRepository.findById(likeInfo.get(i)).get());
+        }
 
+        return reviewResponseDTOList;
+    }
     public List<CommentResponseDTO> createComment(String reviewId, CommentDTO comment) {
         ReviewDTO review = reviewRepository.findById(reviewId).get();
         List<CommentDTO> commentList = review.getComments();
