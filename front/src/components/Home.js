@@ -62,8 +62,8 @@ export default withRouter(function Home({
   };
 
   useEffect(() => {
-    setIsLoading(true);
     window.addEventListener("scroll", handleScroll);
+    setIsLoading(true);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };

@@ -16,12 +16,11 @@ export default withRouter(function SearchHome({
   userInfo,
   component,
   search,
+  onChangeSearch,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(0);
-  const [searchValue, setSearchValue] = useState("");
-  const [searchInputValue, setSearchInputValue] = useState("");
 
   const query = qs.parse(location.search, {
     ignoreQueryPrefix: true,
@@ -40,26 +39,24 @@ export default withRouter(function SearchHome({
     }
   };
 
-  const getMoreReview = async (search, page) => {
+  const getMoreReview = async (search, page, reqStack = 0) => {
+    if (reqStack === 3) {
+      alert("검색된 리뷰가 없습니다");
+      return;
+    }
     await axios
       .get(`${BACK_URL}/review/search/${search}/${page}`)
-      .then((res) => {
+      .then(async (res) => {
         if (res.data === "wait") {
-          console.log("wait");
-          setTimeout(() => {
-            getMoreReview(search, page);
-          }, 1000);
+          console.log("wait", page);
+          await setTimeout(async () => {
+            await getMoreReview(search, page, reqStack + 1);
+          }, 3000);
         } else {
           console.log(res.data, page);
           if (page === 0) {
-            if (res.data.length === 0) {
-              setTimeout(() => {
-                getMoreReview(search, page);
-              }, 3000);
-            } else {
-              console.log(res.data);
-              setReviews(res.data);
-            }
+            console.log(res.data);
+            setReviews(res.data);
           } else {
             setReviews(reviews.concat(res.data));
           }
@@ -80,7 +77,11 @@ export default withRouter(function SearchHome({
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    onChangeSearch(query.search);
+    setReviews([]);
     setPage(0);
+
     setIsLoading(true);
     // history.push(`/search?search=${searchValue}`);
     return () => {};

@@ -19,6 +19,8 @@ export default function HomeContainer() {
 
   const onChangeComponent = (component) => dispatch(changeComponent(component));
 
+  const onChangeSearch = (component) => dispatch(changeSearch(component));
+
   return (
     <>
       <Route
@@ -44,6 +46,7 @@ export default function HomeContainer() {
             onUpdateUserInfo={onUpdateUserInfo}
             userInfo={userInfo}
             search={search}
+            onChangeSearch={onChangeSearch}
           />
         )}
       />
