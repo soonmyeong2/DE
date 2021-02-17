@@ -1,6 +1,7 @@
 from time import sleep
 from tqdm import trange
 from datetime import datetime
+from random import random
 
 from app import Application
 from reviewScraper import ReviewScraper
@@ -54,7 +55,8 @@ class Worker:
                 list(map(lambda data: data.update({
                     'channelName': store_data['channel_name'],
                     'keyword': self.keyword,
-                    'timeStamp': datetime.now()
+                    'timeStamp': datetime.now(),
+                    'randomId': random()
                 }), _json))
                 print(_json)
                 app.count_review(reviews, json)
