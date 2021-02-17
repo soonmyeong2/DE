@@ -1,4 +1,3 @@
-import imageTemp from "../image/logo192.png";
 import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
 import ShoppingCartOutlined from "@material-ui/icons/ShoppingCartOutlined";
 import { Avatar, Button, IconButton, TextField } from "@material-ui/core";
@@ -151,7 +150,9 @@ function BasicReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
           </div>
         ) : null}
         <div className="content-text">
-          <p>{"⭐".repeat(parseInt(review.reviewScore))}</p>
+          <p style={{ margin: "0px" }}>
+            {"⭐".repeat(parseInt(review.reviewScore))}
+          </p>
           <small>
             {review.writerMemberId}
             {(function () {
@@ -160,7 +161,6 @@ function BasicReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
               return "/" + reviewTemp[0] + " " + reviewTemp2[0];
             })()}
           </small>
-          <br />
           <br />
           <small>
             {review.productOptionContent

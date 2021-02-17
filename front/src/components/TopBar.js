@@ -5,7 +5,7 @@ import logo from "../image/logo.png";
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 
-function SearchTopBar({ history, onUpdateSearchInfo }) {
+function SearchTopBar({ history, onUpdateSearchInfo, onChangeSearch }) {
   const [searchValue, setSearchValue] = useState("");
 
   const onChangeSearchBar = (e) => {
@@ -14,8 +14,9 @@ function SearchTopBar({ history, onUpdateSearchInfo }) {
 
   const onClickSearchButton = () => {
     onUpdateSearchInfo(searchValue);
+    onChangeSearch(searchValue);
     history.push(`/search?search=${searchValue}`);
-    history.go();
+    // history.go();
   };
   return (
     <>
@@ -47,9 +48,11 @@ export default withRouter(function TopBar({
   component,
   onUpdateSearchInfo,
   onChangeComponent,
+  onChangeSearch,
 }) {
   const onClickLogo = () => {
     history.push("/");
+    onChangeSearch("");
     history.go();
   };
 
@@ -84,6 +87,7 @@ export default withRouter(function TopBar({
           <SearchTopBar
             history={history}
             onUpdateSearchInfo={onUpdateSearchInfo}
+            onChangeSearch={onChangeSearch}
           />
         </div>
       </div>

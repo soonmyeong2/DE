@@ -3,8 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.dto.CommentDTO;
 import com.example.demo.dto.CommentResponseDTO;
 import com.example.demo.dto.ReviewDTO;
+import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.service.KafkaService;
 import com.example.demo.service.ReviewService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,20 +40,12 @@ public class ReviewController {
             @RequestHeader(value="Referer") String referer,
             @RequestHeader(value="User-Agent") String userAgent,
             @RequestHeader(value="Accept-Encoding") String acceptEncoding,
-            @RequestHeader(value="Accept") String accept,
             @PathVariable(value = "keyword") String keyword,
             @PathVariable(value = "page") int page) {
-        HashMap<String, String> log = new HashMap<String, String>();
-        log.put("Host", host);
-        log.put("Origin", origin);
-        log.put("Referer",referer );
-        log.put("User-Agent",userAgent );
-        log.put("Accept-Encoding",acceptEncoding );
-        log.put("Accept",accept );
-        log.put("User-Ip",request.getRemoteAddr() );
-        log.put("event", "getSearch/"+keyword+"/" +page);
 
-        kafkaService.sendUserLog(log);
+        kafkaService.sendUserLog(host,origin,referer,userAgent,acceptEncoding,request.getRemoteAddr(),"getSearch/"+keyword+"/" +page);
+
+
         try {
 
             String a = URLEncoder.encode(keyword, "UTF-8");
@@ -58,9 +54,9 @@ public class ReviewController {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            conn.setConnectTimeout(3000); // 3초
-            // 읽기 타임아웃 설정
-            conn.setReadTimeout(3000); // 3초-
+//            conn.setConnectTimeout(3000); // 3초
+//            // 읽기 타임아웃 설정
+//            conn.setReadTimeout(3000); // 3초-
 
 
             if (conn.getResponseCode() == 201) {
@@ -78,36 +74,31 @@ public class ReviewController {
         }
 
 
-        List<ReviewDTO> reviewList = reviewService.getSearch(keyword, page);
+        List<ReviewResponseDTO> reviewList = reviewService.getSearch(keyword, page);
         System.out.println(12);
 
-        return new ResponseEntity<List<ReviewDTO>>(reviewList, HttpStatus.OK);
+        return new ResponseEntity<List<ReviewResponseDTO>>(reviewList, HttpStatus.OK);
     }
 
     @GetMapping("")
     ResponseEntity<?> getReviewList(HttpServletRequest request,
+
+                                    @RequestParam(value = "num") Long num,
+                                    @RequestParam(value = "search-info") List<String> searchInfo,
                                     @RequestHeader(value="Host") String host,
                                     @RequestHeader(value="Origin") String origin,
                                     @RequestHeader(value="Referer") String referer,
                                     @RequestHeader(value="User-Agent") String userAgent,
-                                    @RequestHeader(value="Accept-Encoding") String acceptEncoding,
-                                    @RequestHeader(value="Accept") String accept) {
+                                    @RequestHeader(value="Accept-Encoding") String acceptEncoding
+                                    ) {
 
-        HashMap<String, String> log = new HashMap<String, String>();
-        log.put("Host", host);
-        log.put("Origin", origin);
-        log.put("Referer",referer );
-        log.put("User-Agent",userAgent );
-        log.put("Accept-Encoding",acceptEncoding );
-        log.put("Accept",accept );
-        log.put("User-Ip",request.getRemoteAddr() );
-        log.put("event", "getDefalutReviewList");
+        System.out.println(searchInfo);
+        kafkaService.sendUserLog(host,origin,referer,userAgent,acceptEncoding,request.getRemoteAddr(),"getDefalutReviewList");
+        System.out.println(searchInfo);
+        List<ReviewResponseDTO> defalutNewsList = reviewService.getDefalut(searchInfo,num);
 
-        kafkaService.sendUserLog(log);
-        List<Map> defalutNewsList = reviewService.getDefalut();
-
-
-        return new ResponseEntity<List<Map>>(defalutNewsList, HttpStatus.OK);
+        System.out.println(searchInfo);
+        return new ResponseEntity<>(defalutNewsList, HttpStatus.OK);
 
     }
 
@@ -121,17 +112,9 @@ public class ReviewController {
                                     @RequestHeader(value="Accept") String accept,
                                     @PathVariable(value = "reviewId") String reviewId,
                                     @RequestBody CommentDTO comment) {
-        HashMap<String, String> log = new HashMap<String, String>();
-        log.put("Host", host);
-        log.put("Origin", origin);
-        log.put("Referer",referer );
-        log.put("User-Agent",userAgent );
-        log.put("Accept-Encoding",acceptEncoding );
-        log.put("Accept",accept );
-        log.put("User-Ip",request.getRemoteAddr() );
-        log.put("event", "createComment");
 
-        kafkaService.sendUserLog(log);
+        kafkaService.sendUserLog(host,origin,referer,userAgent,acceptEncoding,request.getRemoteAddr(),"createComment");
+
         List<CommentResponseDTO> commentList =  reviewService.createComment(reviewId, comment);
         return new ResponseEntity<>(commentList,HttpStatus.OK);
     }
@@ -147,17 +130,10 @@ public class ReviewController {
                                     @PathVariable(value = "commentId") int commentId,
                                     @PathVariable(value = "password") String password
                                     ) {
-        HashMap<String, String> log = new HashMap<String, String>();
-        log.put("Host", host);
-        log.put("Origin", origin);
-        log.put("Referer",referer );
-        log.put("User-Agent",userAgent );
-        log.put("Accept-Encoding",acceptEncoding );
-        log.put("Accept",accept );
-        log.put("User-Ip",request.getRemoteAddr() );
-        log.put("event", "deleteComment");
 
-        kafkaService.sendUserLog(log);
+
+        kafkaService.sendUserLog(host,origin,referer,userAgent,acceptEncoding,request.getRemoteAddr(),"deleteComment");
+
         List<CommentResponseDTO> commentList =  reviewService.deleteComment(reviewId,commentId,password);
         if (commentList ==null){
 

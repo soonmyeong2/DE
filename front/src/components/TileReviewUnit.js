@@ -1,28 +1,14 @@
 import ModalForm from "./ModalForm";
-import imageTemp from "../image/logo192.png";
 import "../css/Home2.scss";
-import SearchIcon from "@material-ui/icons/Search";
 import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
 import ShoppingCartOutlined from "@material-ui/icons/ShoppingCartOutlined";
 
 import { BACK_URL } from "../api/api";
-import {
-  Avatar,
-  Backdrop,
-  Button,
-  Fade,
-  IconButton,
-  makeStyles,
-  Modal,
-  TextField,
-} from "@material-ui/core";
+import { Avatar, Button, IconButton, TextField } from "@material-ui/core";
 import { FavoriteBorderOutlined } from "@material-ui/icons";
 import axios from "axios";
 import Carousel from "./Carousel";
 import React, { useEffect, useState } from "react";
-import Loadding from "./Loading";
-import logo from "../image/logo.png";
-
 function CommentDeleteModal({ commentDelete, passwordDefalut, commentId }) {
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState(passwordDefalut);
@@ -172,16 +158,25 @@ function TileReviewUnit({ reviewProp, userInfo, onUpdateUserInfo }) {
             ) : null}
             <div className="content-modal-text">
               <div className="content-text">
+                <p style={{ margin: "0px" }}>
+                  {"⭐".repeat(parseInt(review.reviewScore))}
+                </p>
                 <small>
-                  {review.writerMemberId}/
+                  {review.writerMemberId}
+                  {(function () {
+                    const reviewTemp = review.createDate.split("T");
+                    const reviewTemp2 = reviewTemp[1].split(".");
+                    return "/" + reviewTemp[0] + " " + reviewTemp2[0];
+                  })()}
+                </small>
+                <br />
+                <small>
                   {review.productOptionContent
                     ? review.productOptionContent + "/"
                     : null}
                   {review.channelName}
                 </small>
-                <p>{"⭐".repeat(parseInt(review.reviewScore))}</p>
                 <p>{review.reviewContent}</p>
-                <samll>{review.createDate}</samll>
               </div>
               <div className="content-info"></div>
               <div className="content-action">
