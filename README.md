@@ -1,9 +1,6 @@
 ![image](https://user-images.githubusercontent.com/38336997/107942087-18813880-6fce-11eb-9a4f-c20c4d79ab8d.png)
 
-~~Review Early는 review-driven shopping으로 기존의 ```product → review```의 구매 방식에서 ```review → product``` 방식으로 전환된 쇼핑할 수 있는 웹 페이지를 제공합니다. 잘 찍힌 상품의 소개 사진보다 실제 리뷰의 사진을 비교하며 나에게 더 어울릴 상품을 찾아보세요.~~
-
-Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공되는 리뷰 메타데이터를  SNS방식의 로 제공하면서 새로운 컨텐츠와 커뮤니티를 사용자에게 제공하고 자연스럽게 쇼핑으로 연결시키는 것을 목표로 합니다. 
-
+Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공되는 리뷰를 모아 SNS 형태로 제공하면서 새로운 컨텐츠와 커뮤니티를 사용자에게 제공하고 자연스럽게 쇼핑으로 연결시키는 것을 목표로 합니다. 
 
 
 
@@ -28,7 +25,7 @@ Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공�
 
 * __좋아요 페이지__: 사용자가 좋아요 표시한 리뷰를 모아 제공합니다.
 
-* __UI__ : 기본형식(~~페이스북~~ )과 타일형식(~~인스타그램~~) 피드 UI를 제공합니다.
+* __UI__ : 뉴스피드 타입과 그리드 타입피드 UI를 제공합니다.
 
   * 무한스크롤 (Infinity Scroll)로 끊김없는 사용자 경험을 제공합니다
 
@@ -38,6 +35,9 @@ Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공�
 
   * 좋아요 기능
 
+* __대시보드__: 크롤러의 상태와 인기검색어, 데이터베이스의 상태를 제공합니다.
+
+
     
 
 ## 기술 스택
@@ -46,14 +46,10 @@ Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공�
 
 
 
-### 디렉토리 구조도
+## 데모
 
-- [front](./front)
-  - frontend - React
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/38336997/108310646-0df5b780-71f7-11eb-8873-6414a0030ddf.gif)
 
-- [back](./back)
-  - backend - JAVA spring boot
+![image](https://user-images.githubusercontent.com/38336997/108310772-4ac1ae80-71f7-11eb-9538-f44f3c9fc4e2.png)
 
-- [data acquisition](./data%20acquisition)
 
- 
