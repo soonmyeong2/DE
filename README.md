@@ -48,12 +48,12 @@ Review Early는 review-driven shopping 서비스로 기존 쇼핑에서 제공�
 
 ### 디렉토리 구조도
 
-- front
+- [front](./front)
   - frontend - React
 
-- back
+- [back](./back)
   - backend - JAVA spring boot
 
-- data acquisition
+- [data acquisition](./data%20acquisition)
 
  
