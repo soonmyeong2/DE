@@ -42,11 +42,12 @@ export default withRouter(function SearchHome({
   };
 
   const getMoreReview = async (search, page, reqStack = 0) => {
-    if (reqStack === 3) {
+    if (reqStack === 4) {
+      setIsLoading(false);
       alert("검색된 리뷰가 없습니다");
       return;
     }
-    await axios
+    axios
       .get(`${BACK_URL}/review/search/${search}/${page}`)
       .then(async (res) => {
         if (res.data === "wait") {
@@ -56,23 +57,30 @@ export default withRouter(function SearchHome({
           }, 3000);
         } else {
           console.log(res.data, page);
-          if (page === 0) {
-            console.log(res.data);
-            setReviews(res.data);
+          if (res.data.length < 9) {
+            await setTimeout(async () => {
+              await getMoreReview(search, page, reqStack + 1);
+            }, 3000);
           } else {
-            setReviews(reviews.concat(res.data));
+            if (page === 0) {
+              console.log(res.data);
+              setReviews(res.data);
+            } else {
+              setReviews(reviews.concat(res.data));
+            }
+            setPage((page) => page + 1);
+            console.log(reviews);
+            console.log(1234);
+            setIsLoading(false);
           }
-          setPage((page) => page + 1);
         }
       });
-
-    console.log(reviews);
-    setIsLoading(false);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
+    // setIsLoading(true);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };

@@ -57,13 +57,15 @@ export default withRouter(function Home({
       .then((res) => {
         setReviews(reviews.concat(res.data));
         setNumIndex(numIndex + 1);
+
+        setIsLoading(false);
         console.log(reviews);
       })
       .catch((err) => {
         console.log(err);
-      });
 
-    setIsLoading(false);
+        getMoreReview();
+      });
   };
 
   useEffect(() => {
