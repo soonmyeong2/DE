@@ -42,9 +42,12 @@ export default withRouter(function LikeHome({
         setReviews(reviews.concat(res.data));
         setPage(page + 1);
         console.log(reviews, page);
-      });
 
-    setIsLoading(false);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        getMoreReview();
+      });
   };
 
   useEffect(() => {
