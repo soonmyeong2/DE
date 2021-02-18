@@ -221,7 +221,6 @@ function BasicReviewUnit({
               <ChatBubbleOutline />
               {review.comments ? review.comments.length : 0}
             </IconButton>
-            \
           </div>
           <div className="content-action-back">
             <Button
